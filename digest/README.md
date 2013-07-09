@@ -6,7 +6,8 @@ This is intended to demonstrate how digest works inside the AngularJS runtime.
 
 `$apply()` is called to enter the Angular execution context. The 1.1.5 source code for `$apply()` is as follows:
 
-`$apply: function(expr) {
+```javascript
+$apply: function(expr) {
   try {
     beginPhase('$apply');
     return this.$eval(expr);
@@ -21,7 +22,8 @@ This is intended to demonstrate how digest works inside the AngularJS runtime.
       throw e;
     }
   }
-}`
+}
+```
 
 `$apply()` is used to execute an expression in angular from outside of the angular framework. (For example from browser DOM events, setTimeout, XHR or third party libraries).
 
