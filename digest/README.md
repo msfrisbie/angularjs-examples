@@ -2,9 +2,9 @@
 
 This is intended to demonstrate how digest works inside the AngularJS runtime.
 
-## `$apply()`
+### `$apply()`
 
-`$apply()` is called to enter the Angular execution context. The 1.1.5 source code for `$apply()` is as follows:
+`$apply()` is used to execute an expression in angular from outside of the angular framework. (For example from browser DOM events, setTimeout, XHR or third party libraries).The AngularJS 1.1.5 source code for `$apply()` is as follows:
 
 ```javascript
 $apply: function(expr) {
@@ -25,22 +25,23 @@ $apply: function(expr) {
 }
 ```
 
-`$apply()` is used to execute an expression in angular from outside of the angular framework. (For example from browser DOM events, setTimeout, XHR or third party libraries).
+After evaluating the `expr` parameter and handling exceptions thrown by it, `$apply` invokes `$rootScope.$digest()`. This 'digest loop' cycles through the evalAsync queue and the $watch list until the DOM is stabilized.
 
-We see that, after evaluating the `expr` parameter and handling exceptions thrown by it, it invokes `$rootScope.$digest()`. This 'digest loop' cycles through the evalAsync queue and the $watch list until the DOM is stabilized.
+Note: As detailed in the docs, it is possible to register a $watch on all $digest calls by passing it a single parameter, the callback function. The callback executes on all $digest invocations application-wide.
+
+### Example Walkthrough
 
 In this example, we can gain some insight into when $digest is called.
-
-As detailed in the docs, it is possible to register a $watch on all $digest calls by passing it a single parameter, the callback function. The callback executes on all $digest invocations application-wide.
 
 Opening the application and examine the console.
 
 After the config finishes, the controller will obviously be instantiated.
+
 Inside it, we declare a variable and a function, which are not of interest at this time, we register a $watch on all $digest calls, and we set a $timeout. We can see that $digest is invoked twice, this is due to the $watch listener being registered.
 
 When the timeout executes, it will invoke the make_request function, which contains an $http request.
 
-Following this we see that two more calls to $digest are invoked. Both XHR and $timeout actions will call $digest.
+Following this, we see that $digest occurs 2 more times. Both XHR and $timeout actions will invoke $digest when they complete.
 
 Additionally, we can see that clicking the button will invoke $digest. `ng-click`, though not formally tied to anything, invokes $digest.
 
