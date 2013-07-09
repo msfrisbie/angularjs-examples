@@ -1,8 +1,8 @@
-# `$digest()`
+# $digest()
 
 This is intended to demonstrate how digest works inside the AngularJS runtime.
 
-### `$apply()`
+### $apply()
 
 `$apply()` is used to execute an expression in angular from outside of the angular framework. (For example from browser DOM events, setTimeout, XHR or third party libraries).The AngularJS 1.1.5 source code for `$apply()` is as follows:
 
@@ -25,7 +25,7 @@ $apply: function(expr) {
 }
 ```
 
-After evaluating the `expr` parameter and handling exceptions thrown by it, `$apply` invokes `$rootScope.$digest()`. This 'digest loop' cycles through the evalAsync queue and the $watch list until the DOM is stabilized.
+After evaluating the `expr` parameter and handling exceptions thrown by it, `$apply` invokes `$rootScope.$digest()`. This 'digest loop' cycles through the $evalAsync queue and the $watch list until the DOM is stabilized.
 
 Note: As detailed in the docs, it is possible to register a $watch on all $digest calls by passing it a single parameter, the callback function. The callback executes on all $digest invocations application-wide.
 
